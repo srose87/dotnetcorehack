@@ -9,6 +9,6 @@ A very basic API to get back into things with C#
 
 ## Run the app 
 1. `dotnet restore` - this will download all the dependnecies
-2. `dotnet run` - this will start the app
+2. `dotnet run` - within `/dotnetcorehack` dir will start the app
 3. JSON request using Postman can be made to `http://localhost:5000/contacts`
 4. Run tests with `dotnet test dotnetcorehack.Test/dotnetcorehack.Test.csproj`
