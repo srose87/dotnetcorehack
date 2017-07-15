@@ -1,4 +1,6 @@
 # dotnetcorehack
+[![Build Status](https://travis-ci.org/dlogankeenan/dotnetcorehack.svg?branch=master)](https://travis-ci.org/dlogankeenan/dotnetcorehack)
+
 A very basic API to get back into things with C#
 
 ## Prerequisites for Running and Writing Code
