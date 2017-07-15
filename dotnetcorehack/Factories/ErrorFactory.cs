@@ -1,24 +1,31 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+namespace Dotnetcorehack.Factories
+{
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace dotnetcorehack.Factories {
+    public class ErrorFactory
+    {
+        public static Dictionary<string, List<string>> GetErrorMessages(ModelStateDictionary modelState)
+        {
+            var errorDictionary = new Dictionary<string, List<string>>();
 
-    public class ErrorFactory {
-        public static Dictionary<String, List<String>> getErrorMessages(ModelStateDictionary modelState) {
-            var errorDictionary = new Dictionary<String, List<String>>();
+            foreach (KeyValuePair<string, ModelStateEntry> modelStateError in modelState)
+            {
+                var errorMessagesList = new List<string>();
 
-            foreach (KeyValuePair<String, ModelStateEntry> modelStateError in modelState) {
-               var errorMessagesList = new List<String>();
-
-               foreach (var modelError in modelStateError.Value.Errors) {
+                foreach (var modelError in modelStateError.Value.Errors)
+                {
                     errorMessagesList.Add(modelError.ErrorMessage);
-               }
+                }
 
-               errorDictionary.Add(modelStateError.Key, errorMessagesList);
+                if (errorMessagesList.Count > 0)
+                {
+                    errorDictionary.Add(modelStateError.Key, errorMessagesList);
+                }
             }
+
             return errorDictionary;
         }
-
     }
 }

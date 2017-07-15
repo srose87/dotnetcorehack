@@ -1,21 +1,21 @@
-using System.ComponentModel.DataAnnotations;
+namespace Dotnetcorehack.Models
+{
+    using System.ComponentModel.DataAnnotations;
 
-namespace dotnetcorehack.Models {
-    public class Contact {
-        
-        public int id {get; set;}
-
-        [Required]
-        [MaxLength(255)]
-        public string firstName {get; set;} 
+    public class Contact
+    {
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string lastName {get; set;}
-        
+        public string FirstName { get; set; }
+
         [Required]
         [MaxLength(255)]
-        public string phone {get; set;}
+        public string LastName { get; set; }
 
+        [Required]
+        [MaxLength(255)]
+        public string Phone { get; set; }
     }
 }

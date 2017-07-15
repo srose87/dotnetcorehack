@@ -1,75 +1,81 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using dotnetcorehack.Repositories;
-using dotnetcorehack.Models;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using dotnetcorehack.Factories;
-
-namespace dotnetcorehack.Controllers
+namespace Dotnetcorehack.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using Dotnetcorehack.Factories;
+    using Dotnetcorehack.Models;
+    using Dotnetcorehack.Repositories;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
+    using Newtonsoft.Json;
+
     [Route("/[controller]")]
     public class ContactsController : Controller
     {
-        private IContactRepository _contactRepository;
-        public ContactsController(IContactRepository contactRepository) {
-            _contactRepository = contactRepository;
+        private IContactRepository contactRepository;
+
+        public ContactsController(IContactRepository contactRepository)
+        {
+            this.contactRepository = contactRepository;
         }
 
         [HttpGet]
         public IActionResult Get()
-        {    
-            return Json(_contactRepository.GetContacts());
-            
+        {
+            return this.Json(this.contactRepository.GetContacts());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var contact = _contactRepository.GetContactById(id);
-            if (contact == null) {
-                return NotFound();
+            var contact = this.contactRepository.GetContactById(id);
+            if (contact == null)
+            {
+                return this.NotFound();
             }
-            return Json(contact);
+
+            return this.Json(contact);
         }
 
         [HttpPost]
         public IActionResult Post([FromBody]Contact contact)
         {
-            if (ModelState.IsValid) {
-                _contactRepository.createContact(contact);
+            if (this.ModelState.IsValid)
+            {
+                this.contactRepository.CreateContact(contact);
 
-                return Created("/contacts/" + contact.id.ToString(), contact);
+                return this.Created("/contacts/" + contact.Id.ToString(), contact);
             }
 
-            return BadRequest(ErrorFactory.getErrorMessages(ViewData.ModelState));
+            return this.BadRequest(ErrorFactory.GetErrorMessages(this.ViewData.ModelState));
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Contact contact)
         {
-            if (ModelState.IsValid) {                
-                var contactUpdated = _contactRepository.updateContact(id, contact);
+            if (this.ModelState.IsValid)
+            {
+                var contactUpdated = this.contactRepository.UpdateContact(id, contact);
 
-                if (contactUpdated == null) {
-                    return NotFound();
+                if (contactUpdated == null)
+                {
+                    return this.NotFound();
                 }
 
-                return NoContent();
+                return this.NoContent();
             }
 
-            return BadRequest(ErrorFactory.getErrorMessages(ViewData.ModelState));
+            return this.BadRequest(ErrorFactory.GetErrorMessages(this.ViewData.ModelState));
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _contactRepository.deleteContact(id);
+            this.contactRepository.DeleteContact(id);
         }
     }
 }

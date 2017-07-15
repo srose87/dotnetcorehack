@@ -1,8 +1,8 @@
-using dotnetcorehack.Models;
-using Microsoft.EntityFrameworkCore;
- 
-namespace dotnetcorehack.Repositories
+namespace Dotnetcorehack.Repositories
 {
+    using Dotnetcorehack.Models;
+    using Microsoft.EntityFrameworkCore;
+
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options)

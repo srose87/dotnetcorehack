@@ -1,28 +1,28 @@
-using System;
-using Moq;
-using Xunit;
-using dotnetcorehack.Repositories;
-using dotnetcorehack.Controllers;
-using Microsoft.AspNetCore.Mvc;
-using dotnetcorehack.Models;
-using System.Collections.Generic;
-
-namespace dotnetcorehack.Test.Controllers
+namespace Dotnetcorehack.Test.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using Dotnetcorehack.Controllers;
+    using Dotnetcorehack.Models;
+    using Dotnetcorehack.Repositories;
+    using Microsoft.AspNetCore.Mvc;
+    using Moq;
+    using Xunit;
+
     public class ContactsControllerTest
     {
-        private Mock<IContactRepository> _contactRepo;
-        private ContactsController _controller;
-        private int _expectedId;
-        private Random _random;
+        private Mock<IContactRepository> contactRepository;
+        private ContactsController contactsController;
+        private int expectedId;
+        private Random random;
 
         public ContactsControllerTest()
         {
-            _random = new Random();
-            _expectedId = _random.Next();
-            _contactRepo = new Mock<IContactRepository>();
+            this.random = new Random();
+            this.expectedId = this.random.Next();
+            this.contactRepository = new Mock<IContactRepository>();
 
-            _controller = new ContactsController(_contactRepo.Object);
+            this.contactsController = new ContactsController(this.contactRepository.Object);
         }
 
         private string AnyString()
@@ -32,7 +32,7 @@ namespace dotnetcorehack.Test.Controllers
 
         private void GivenModelIsInvalid()
         {
-            _controller.ModelState.AddModelError(AnyString(), AnyString());
+            this.contactsController.ModelState.AddModelError(this.AnyString(), this.AnyString());
         }
 
         public class DeleteTest : ContactsControllerTest
@@ -40,9 +40,9 @@ namespace dotnetcorehack.Test.Controllers
             [Fact]
             public void ShouldCallRepositoryWithId()
             {
-                _controller.Delete(_expectedId);
+                this.contactsController.Delete(this.expectedId);
 
-                _contactRepo.Verify(repo => repo.deleteContact(_expectedId), Times.Once);
+                this.contactRepository.Verify(repo => repo.DeleteContact(this.expectedId), Times.Once);
             }
         }
 
@@ -51,9 +51,9 @@ namespace dotnetcorehack.Test.Controllers
             [Fact]
             public void ShouldReturnBadRequestWhenGivenInvalidModel()
             {
-                GivenModelIsInvalid();
+                this.GivenModelIsInvalid();
 
-                var actualResponse = _controller.Put(_random.Next(), null);
+                var actualResponse = this.contactsController.Put(this.random.Next(), null);
 
                 Assert.IsType<BadRequestObjectResult>(actualResponse);
             }
@@ -62,9 +62,9 @@ namespace dotnetcorehack.Test.Controllers
             public void ShouldReturnNoContentWhenContactUpdates()
             {
                 var contact = new Contact();
-                _contactRepo.Setup(repo => repo.updateContact(_expectedId, contact)).Returns(new Contact());
+                this.contactRepository.Setup(repo => repo.UpdateContact(this.expectedId, contact)).Returns(new Contact());
 
-                var actualResponse = _controller.Put(_expectedId, contact);
+                var actualResponse = this.contactsController.Put(this.expectedId, contact);
 
                 Assert.IsType<NoContentResult>(actualResponse);
             }
@@ -72,7 +72,7 @@ namespace dotnetcorehack.Test.Controllers
             [Fact]
             public void ShouldReturnNotFoundWhenContactIsValidButDoesNotExist()
             {
-                var actualResponse = _controller.Put(_expectedId, new Contact());
+                var actualResponse = this.contactsController.Put(this.expectedId, new Contact());
 
                 Assert.IsType<NotFoundResult>(actualResponse);
             }
@@ -84,20 +84,20 @@ namespace dotnetcorehack.Test.Controllers
             public void ShouldCallRepoWithContact()
             {
                 var contact = new Contact();
-                _contactRepo.Setup(repo => repo.createContact(contact)).Callback(() => contact.id = _expectedId);
+                this.contactRepository.Setup(repo => repo.CreateContact(contact)).Callback(() => contact.Id = this.expectedId);
 
-                var actualResponse = _controller.Post(contact) as CreatedResult;
+                var actualResponse = this.contactsController.Post(contact) as CreatedResult;
 
                 Assert.NotNull(actualResponse);
-                Assert.Equal(actualResponse.Location, "/contacts/" + _expectedId);
+                Assert.Equal(actualResponse.Location, "/contacts/" + this.expectedId);
             }
 
             [Fact]
             public void ShouldReturnBadRequestWhenModelIsInvalid()
             {
-                GivenModelIsInvalid();
+                this.GivenModelIsInvalid();
 
-                var actualResponse = _controller.Post(null);
+                var actualResponse = this.contactsController.Post(null);
 
                 Assert.IsType<BadRequestObjectResult>(actualResponse);
             }
@@ -105,26 +105,14 @@ namespace dotnetcorehack.Test.Controllers
 
         public class GetTest : ContactsControllerTest
         {
-            private List<T> N<T>(int count, Func<T> creator)
-            {
-                var list = new List<T>();
-
-                for(var index = 0; index < count; index++)
-                {
-                    list.Add(creator());
-                }
-
-                return list;
-            }
-
             [Fact]
             public void ShouldReturnAllContacts()
             {
-                var expectedContactsCount = _random.Next(0, 100);
-                var expectedContacts = N(expectedContactsCount, () => new Contact() { id = _random.Next()});
-                _contactRepo.Setup(repo => repo.GetContacts()).Returns(expectedContacts);
+                var expectedContactsCount = this.random.Next(0, 100);
+                var expectedContacts = this.N(expectedContactsCount, () => new Contact() { Id = this.random.Next() });
+                this.contactRepository.Setup(repo => repo.GetContacts()).Returns(expectedContacts);
 
-                var response = _controller.Get() as JsonResult;
+                var response = this.contactsController.Get() as JsonResult;
                 var actualContacts = response.Value as List<Contact>;
 
                 Assert.Same(expectedContacts, actualContacts);
@@ -135,9 +123,9 @@ namespace dotnetcorehack.Test.Controllers
             public void ShouldReturnSpecificContact()
             {
                 var expectedContact = new Contact();
-                _contactRepo.Setup(repo => repo.GetContactById(_expectedId)).Returns(expectedContact);
+                this.contactRepository.Setup(repo => repo.GetContactById(this.expectedId)).Returns(expectedContact);
 
-                var response = _controller.Get(_expectedId) as JsonResult;
+                var response = this.contactsController.Get(this.expectedId) as JsonResult;
 
                 Assert.Same(expectedContact, response.Value);
             }
@@ -145,11 +133,22 @@ namespace dotnetcorehack.Test.Controllers
             [Fact]
             public void ShouldReturnNotFoundIfContactDoesNotExist()
             {
-                var response = _controller.Get(_expectedId);
+                var response = this.contactsController.Get(this.expectedId);
 
                 Assert.IsType<NotFoundResult>(response);
             }
-        }
 
+            private List<T> N<T>(int count, Func<T> creator)
+            {
+                var list = new List<T>();
+
+                for (var index = 0; index < count; index++)
+                {
+                    list.Add(creator());
+                }
+
+                return list;
+            }
+        }
     }
 }
