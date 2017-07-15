@@ -6,3 +6,5 @@ script:
  - dotnet restore
  - dotnet build -c release
  - dotnet test dotnetcorehack.Test/dotnetcorehack.Test.csproj
+notifications:
+  email: false
