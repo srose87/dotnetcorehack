@@ -9,11 +9,16 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet  >..\_stylecop\StyleCopRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\_stylecop\StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug' ">
-    <CodeAnalysisRuleSet>..\_stylecop\StyleCopRulesTest.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
+  <Target Name="DisableStyleCop" 
+  	  BeforeTargets="CoreCompile"
+	  Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <ItemGroup>
+      <Analyzer Remove="@(Analyzer)" />
+    </ItemGroup>
+  </Target>
 
   <PropertyGroup>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
