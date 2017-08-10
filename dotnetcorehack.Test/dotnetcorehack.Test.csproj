@@ -5,9 +5,7 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\_stylecop\StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <Target Name="DisableStyleCop" 
-  	  BeforeTargets="CoreCompile"
-	  Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+  <Target Name="DisableStyleCop" BeforeTargets="CoreCompile" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <ItemGroup>
       <Analyzer Remove="@(Analyzer)" />
     </ItemGroup>
@@ -19,6 +17,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="15.0.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="Moq" Version="4.7.63" />
     <PackageReference Include="xunit" Version="2.2.0" />
