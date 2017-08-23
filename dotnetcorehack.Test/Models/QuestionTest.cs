@@ -7,7 +7,6 @@ namespace Dotnetcorehack.Test.Models
     using Bogus;
     using Dotnetcorehack.Models;
     using Microsoft.AspNetCore.Mvc;
-    using Moq;
     using Xunit;
 
     public class QuestionTest
@@ -42,7 +41,7 @@ namespace Dotnetcorehack.Test.Models
         [Fact]
         public void ShouldHaveTheTextAsRequired()
         {
-            var propertyInfo = typeof(Question).GetProperty("Text");
+            var propertyInfo = typeof(Question).GetProperty(nameof(this.question.Text));
 
             var requiredAttribute = propertyInfo.GetCustomAttributes(typeof(RequiredAttribute), true)
                 .Cast<RequiredAttribute>()
@@ -63,7 +62,7 @@ namespace Dotnetcorehack.Test.Models
         [Fact]
         public void ShouldHaveTheTypeAsRequired()
         {
-            var propertyInfo = typeof(Question).GetProperty("Type");
+            var propertyInfo = typeof(Question).GetProperty(nameof(this.question.Type));
 
             var requiredAttribute = propertyInfo.GetCustomAttributes(typeof(RequiredAttribute), true)
                 .Cast<RequiredAttribute>()
@@ -84,7 +83,7 @@ namespace Dotnetcorehack.Test.Models
         [Fact]
         public void ShouldHaveTheSurveyIdAsRequired()
         {
-            var propertyInfo = typeof(Question).GetProperty("SurveyId");
+            var propertyInfo = typeof(Question).GetProperty(nameof(this.question.SurveyId));
 
             var requiredAttribute = propertyInfo.GetCustomAttributes(typeof(RequiredAttribute), true)
                 .Cast<RequiredAttribute>()

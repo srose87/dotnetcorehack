@@ -7,7 +7,6 @@ namespace Dotnetcorehack.Test.Models
     using Bogus;
     using Dotnetcorehack.Models;
     using Microsoft.AspNetCore.Mvc;
-    using Moq;
     using Xunit;
 
     public class AnswerTest
@@ -51,7 +50,7 @@ namespace Dotnetcorehack.Test.Models
         [Fact]
         public void ShouldHaveTheQuestionIdAsRequired()
         {
-            var propertyInfo = typeof(AnswerChoice).GetProperty("QuestionId");
+            var propertyInfo = typeof(Answer).GetProperty(nameof(this.answer.QuestionId));
 
             var requiredAttribute = propertyInfo.GetCustomAttributes(typeof(RequiredAttribute), true)
                 .Cast<RequiredAttribute>()

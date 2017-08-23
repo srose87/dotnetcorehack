@@ -7,7 +7,6 @@ namespace Dotnetcorehack.Test.Models
     using Bogus;
     using Dotnetcorehack.Models;
     using Microsoft.AspNetCore.Mvc;
-    using Moq;
     using Xunit;
 
     public class AnswerChoiceTest
@@ -42,7 +41,7 @@ namespace Dotnetcorehack.Test.Models
         [Fact]
         public void ShouldHaveTheQuestionIdAsRequired()
         {
-            var propertyInfo = typeof(AnswerChoice).GetProperty("QuestionId");
+            var propertyInfo = typeof(AnswerChoice).GetProperty(nameof(this.answerChoice.QuestionId));
 
             var requiredAttribute = propertyInfo.GetCustomAttributes(typeof(RequiredAttribute), true)
                 .Cast<RequiredAttribute>()
@@ -63,7 +62,7 @@ namespace Dotnetcorehack.Test.Models
         [Fact]
         public void ShouldHaveTheLabelAsRequired()
         {
-            var propertyInfo = typeof(AnswerChoice).GetProperty("Label");
+            var propertyInfo = typeof(AnswerChoice).GetProperty(nameof(this.answerChoice.Label));
 
             var requiredAttribute = propertyInfo.GetCustomAttributes(typeof(RequiredAttribute), true)
                 .Cast<RequiredAttribute>()
@@ -75,7 +74,7 @@ namespace Dotnetcorehack.Test.Models
         [Fact]
         public void ShouldHaveTheLabelWithAMaxLengthOf255()
         {
-            var propertyInfo = typeof(AnswerChoice).GetProperty("Label");
+            var propertyInfo = typeof(AnswerChoice).GetProperty(nameof(this.answerChoice.Label));
 
             var requiredAttribute = propertyInfo.GetCustomAttributes(typeof(MaxLengthAttribute), true)
                 .Cast<MaxLengthAttribute>()

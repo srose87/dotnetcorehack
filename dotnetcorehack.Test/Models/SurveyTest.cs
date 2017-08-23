@@ -7,7 +7,6 @@ namespace Dotnetcorehack.Test.Models
     using Bogus;
     using Dotnetcorehack.Models;
     using Microsoft.AspNetCore.Mvc;
-    using Moq;
     using Xunit;
 
     public class SurveyTest
@@ -42,7 +41,7 @@ namespace Dotnetcorehack.Test.Models
         [Fact]
         public void ShouldHaveTheTitleAsRequired()
         {
-            var propertyInfo = typeof(Survey).GetProperty("Title");
+            var propertyInfo = typeof(Survey).GetProperty(nameof(this.survey.Title));
 
             var requiredAttribute = propertyInfo.GetCustomAttributes(typeof(RequiredAttribute), true)
                 .Cast<RequiredAttribute>()
