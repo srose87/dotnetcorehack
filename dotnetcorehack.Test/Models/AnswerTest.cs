@@ -59,14 +59,5 @@ namespace Dotnetcorehack.Test.Models
 
             Assert.NotNull(requiredAttribute);
         }
-
-        [Fact]
-        public void ShouldHaveAValueProperty()
-        {
-            var expectedFreeFormText = this.faker.Lorem.Text();
-            this.answer.FreeFormText = expectedFreeFormText;
-
-            Assert.Equal(this.answer.FreeFormText, expectedFreeFormText);
-        }
     }
 }

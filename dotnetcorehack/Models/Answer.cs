@@ -8,8 +8,6 @@ namespace Dotnetcorehack.Models
 
         public int AnswerChoiceId { get; set; }
 
-        public string FreeFormText { get; set; }
-
         [Required]
         public int QuestionId { get; set; }
     }
