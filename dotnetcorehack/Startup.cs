@@ -33,6 +33,7 @@
             services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase());
 
             services.AddScoped<IContactRepository, ContactRepository>();
+            services.AddScoped<ISurveyRepository, SurveyRepository>();
             services.AddMvc();
         }
 
