@@ -38,11 +38,6 @@ namespace Dotnetcorehack.Test.Controllers
             Assert.Equal(routeAttribute.Template, "/[controller]");
         }
 
-        private string AnyString()
-        {
-            return Guid.NewGuid().ToString();
-        }
-
         public class DeleteTest : SurveysControllerTest
         {
             [Fact]
