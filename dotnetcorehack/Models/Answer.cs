@@ -7,8 +7,5 @@ namespace Dotnetcorehack.Models
         public int Id { get; set; }
 
         public int AnswerChoiceId { get; set; }
-
-        [Required]
-        public int QuestionId { get; set; }
     }
 }

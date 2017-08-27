@@ -37,26 +37,5 @@ namespace Dotnetcorehack.Test.Models
 
             Assert.Equal(this.answer.AnswerChoiceId, expectedAnswerChoiceId);
         }
-
-        [Fact]
-        public void ShouldHaveQuestionChoiceIdProperty()
-        {
-            var expectedQuestionId = this.faker.Random.Int();
-            this.answer.QuestionId = expectedQuestionId;
-
-            Assert.Equal(this.answer.QuestionId, expectedQuestionId);
-        }
-
-        [Fact]
-        public void ShouldHaveTheQuestionIdAsRequired()
-        {
-            var propertyInfo = typeof(Answer).GetProperty(nameof(this.answer.QuestionId));
-
-            var requiredAttribute = propertyInfo.GetCustomAttributes(typeof(RequiredAttribute), true)
-                .Cast<RequiredAttribute>()
-                .FirstOrDefault();
-
-            Assert.NotNull(requiredAttribute);
-        }
     }
 }
