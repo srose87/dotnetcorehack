@@ -43,11 +43,6 @@ namespace Dotnetcorehack.Test.Controllers
             return Guid.NewGuid().ToString();
         }
 
-        private void GivenModelIsInvalid()
-        {
-            this.surveysController.ModelState.AddModelError(this.AnyString(), this.AnyString());
-        }
-
         public class DeleteTest : SurveysControllerTest
         {
             [Fact]
@@ -74,16 +69,6 @@ namespace Dotnetcorehack.Test.Controllers
 
         public class PutTest : SurveysControllerTest
         {
-            [Fact]
-            public void ShouldReturnBadRequestWhenGivenInvalidModel()
-            {
-                this.GivenModelIsInvalid();
-
-                var actualResponse = this.surveysController.Put(this.random.Next(), null);
-
-                Assert.IsType<BadRequestObjectResult>(actualResponse);
-            }
-
             [Fact]
             public void ShouldReturnNoContentWhenSurveyUpdates()
             {
@@ -129,16 +114,6 @@ namespace Dotnetcorehack.Test.Controllers
 
                 Assert.NotNull(actualResponse);
                 Assert.Equal(actualResponse.Location, "/surveys/" + this.expectedId);
-            }
-
-            [Fact]
-            public void ShouldReturnBadRequestWhenModelIsInvalid()
-            {
-                this.GivenModelIsInvalid();
-
-                var actualResponse = this.surveysController.Post(null);
-
-                Assert.IsType<BadRequestObjectResult>(actualResponse);
             }
 
             [Fact]

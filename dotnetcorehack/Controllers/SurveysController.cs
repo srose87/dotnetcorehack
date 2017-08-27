@@ -38,32 +38,22 @@ namespace Dotnetcorehack.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Survey survey)
         {
-            if (this.ModelState.IsValid)
-            {
-                this.surveyRepository.CreateSurvey(survey);
+            this.surveyRepository.CreateSurvey(survey);
 
-                return this.Created("/surveys/" + survey.Id.ToString(), survey);
-            }
-
-            return this.BadRequest(ErrorFactory.GetErrorMessages(this.ViewData.ModelState));
+            return this.Created("/surveys/" + survey.Id.ToString(), survey);
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Survey survey)
         {
-            if (this.ModelState.IsValid)
+            var surveyUpdated = this.surveyRepository.UpdateSurvey(id, survey);
+
+            if (surveyUpdated == null)
             {
-                var surveyUpdated = this.surveyRepository.UpdateSurvey(id, survey);
-
-                if (surveyUpdated == null)
-                {
-                    return this.NotFound();
-                }
-
-                return this.NoContent();
+                return this.NotFound();
             }
 
-            return this.BadRequest(ErrorFactory.GetErrorMessages(this.ViewData.ModelState));
+            return this.NoContent();
         }
 
         [HttpDelete("{id}")]
