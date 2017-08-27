@@ -11,6 +11,8 @@ namespace Dotnetcorehack.Repositories.Interfaces
 
         Question UpdateQuestion(int id, Question question);
 
+        List<Question> GetQuestionsFromSurveyId(int surveyId);
+
         void DeleteQuestion(int id);
     }
 }
