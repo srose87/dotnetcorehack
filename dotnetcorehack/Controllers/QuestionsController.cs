@@ -5,6 +5,7 @@ namespace Dotnetcorehack.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
+    [Route("/[controller]")]
     public class QuestionsController : Controller
     {
         private IQuestionRepository questionRepository;
@@ -14,6 +15,7 @@ namespace Dotnetcorehack.Controllers
             this.questionRepository = questionRepository;
         }
 
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var question = this.questionRepository.GetQuestionById(id);
@@ -26,6 +28,7 @@ namespace Dotnetcorehack.Controllers
             return this.NotFound();
         }
 
+        [HttpPost]
         public IActionResult Post(Question question)
         {
             var createdQuestion = this.questionRepository.CreateQuestion(question);
@@ -33,6 +36,7 @@ namespace Dotnetcorehack.Controllers
             return this.Created("/questions/" + createdQuestion.Id, createdQuestion);
         }
 
+        [HttpPut("{id}")]
         public IActionResult Put(int id, Question question)
         {
             var updatedQuestion = this.questionRepository.UpdateQuestion(id, question);
@@ -45,6 +49,7 @@ namespace Dotnetcorehack.Controllers
             return this.NoContent();
         }
 
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             this.questionRepository.DeleteQuestion(id);

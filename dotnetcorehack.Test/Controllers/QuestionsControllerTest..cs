@@ -29,9 +29,15 @@ namespace Dotnetcorehack.Test.Controllers
             this.questionsController = new QuestionsController(this.questionRepository.Object);
         }
 
-        private string AnyString()
+        [Fact]
+        public void ShouldDefineTheRoute()
         {
-            return Guid.NewGuid().ToString();
+            var routeAttribute = typeof(QuestionsController).GetTypeInfo().GetCustomAttributes(typeof(RouteAttribute), true)
+                .Cast<RouteAttribute>()
+                .FirstOrDefault();
+
+            Assert.NotNull(routeAttribute);
+            Assert.Equal(routeAttribute.Template, "/[controller]");
         }
 
         public class GetTest : QuestionsControllerTest
@@ -54,6 +60,19 @@ namespace Dotnetcorehack.Test.Controllers
 
                 Assert.IsType<NotFoundResult>(response);
             }
+
+            [Fact]
+            public void ShouldBeAHttpGet()
+            {
+                var methodInfo = typeof(QuestionsController).GetMethod(nameof(this.questionsController.Get));
+
+                var getAttribute = methodInfo.GetCustomAttributes(typeof(HttpGetAttribute), true)
+                .Cast<HttpGetAttribute>()
+                .FirstOrDefault();
+
+                Assert.NotNull(getAttribute);
+                Assert.Equal(getAttribute.Template, "{id}");
+            }
         }
 
         public class PostTest : QuestionsControllerTest
@@ -71,6 +90,18 @@ namespace Dotnetcorehack.Test.Controllers
 
                 Assert.Equal(actualResponse.Location, "/questions/" + expectedQuestionCreated.Id);
                 Assert.Same(expectedQuestionCreated, actualResponse.Value);
+            }
+
+            [Fact]
+            public void ShouldBeAHttpPost()
+            {
+                var methodInfo = typeof(QuestionsController).GetMethod(nameof(this.questionsController.Post));
+
+                var postAttribute = methodInfo.GetCustomAttributes(typeof(HttpPostAttribute), true)
+                .Cast<HttpPostAttribute>()
+                .FirstOrDefault();
+
+                Assert.NotNull(postAttribute);
             }
         }
 
@@ -95,6 +126,19 @@ namespace Dotnetcorehack.Test.Controllers
 
                 Assert.IsType<NotFoundResult>(actualResponse);
             }
+
+            [Fact]
+            public void ShouldBeAHttpPut()
+            {
+                var methodInfo = typeof(QuestionsController).GetMethod(nameof(this.questionsController.Put));
+
+                var putAttribute = methodInfo.GetCustomAttributes(typeof(HttpPutAttribute), true)
+                .Cast<HttpPutAttribute>()
+                .FirstOrDefault();
+
+                Assert.NotNull(putAttribute);
+                Assert.Equal(putAttribute.Template, "{id}");
+            }
         }
 
         public class DeleteTest : QuestionsControllerTest
@@ -107,6 +151,19 @@ namespace Dotnetcorehack.Test.Controllers
                 this.questionRepository.Verify(repo => repo.DeleteQuestion(this.expectedId), Times.Once);
 
                 Assert.IsType<NoContentResult>(actualResponse);
+            }
+
+            [Fact]
+            public void ShouldBeAHttpDelete()
+            {
+                var methodInfo = typeof(QuestionsController).GetMethod(nameof(this.questionsController.Delete));
+
+                var deleteAttribute = methodInfo.GetCustomAttributes(typeof(HttpDeleteAttribute), true)
+                .Cast<HttpDeleteAttribute>()
+                .FirstOrDefault();
+
+                Assert.NotNull(deleteAttribute);
+                Assert.Equal(deleteAttribute.Template, "{id}");
             }
         }
     }
