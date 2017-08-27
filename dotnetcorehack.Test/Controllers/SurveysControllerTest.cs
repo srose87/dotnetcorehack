@@ -7,6 +7,7 @@ namespace Dotnetcorehack.Test.Controllers
     using Dotnetcorehack.Controllers;
     using Dotnetcorehack.Models;
     using Dotnetcorehack.Repositories;
+    using Dotnetcorehack.Repositories.Interfaces;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
     using Xunit;

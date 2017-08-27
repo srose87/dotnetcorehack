@@ -9,6 +9,7 @@ namespace Dotnetcorehack.Controllers
     using Dotnetcorehack.Factories;
     using Dotnetcorehack.Models;
     using Dotnetcorehack.Repositories;
+    using Dotnetcorehack.Repositories.Interfaces;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
     using Newtonsoft.Json;

@@ -1,4 +1,4 @@
-namespace Dotnetcorehack.Repositories
+namespace Dotnetcorehack.Repositories.Interfaces
 {
     using System.Collections.Generic;
     using System.Linq;
