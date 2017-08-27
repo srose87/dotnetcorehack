@@ -23,12 +23,6 @@ namespace Dotnetcorehack.Controllers
             this.surveyRepository = surveyRepository;
         }
 
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return this.Json(this.surveyRepository.GetSurveys());
-        }
-
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {

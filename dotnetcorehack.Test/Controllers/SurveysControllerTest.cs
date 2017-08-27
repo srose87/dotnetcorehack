@@ -3,6 +3,7 @@ namespace Dotnetcorehack.Test.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Dotnetcorehack.Controllers;
     using Dotnetcorehack.Models;
     using Dotnetcorehack.Repositories;
@@ -26,6 +27,17 @@ namespace Dotnetcorehack.Test.Controllers
             this.surveysController = new SurveysController(this.surveyRepository.Object);
         }
 
+        [Fact]
+        public void ShouldDefineTheRoute()
+        {
+            var routeAttribute = typeof(SurveysController).GetTypeInfo().GetCustomAttributes(typeof(RouteAttribute), true)
+                .Cast<RouteAttribute>()
+                .FirstOrDefault();
+
+            Assert.NotNull(routeAttribute);
+            Assert.Equal(routeAttribute.Template, "/[controller]");
+        }
+
         private string AnyString()
         {
             return Guid.NewGuid().ToString();
@@ -44,6 +56,19 @@ namespace Dotnetcorehack.Test.Controllers
                 this.surveysController.Delete(this.expectedId);
 
                 this.surveyRepository.Verify(repo => repo.DeleteSurvey(this.expectedId), Times.Once);
+            }
+
+            [Fact]
+            public void ShouldBeAHttpDelete()
+            {
+                var methodInfo = typeof(SurveysController).GetMethod(nameof(this.surveysController.Delete));
+
+                var deleteAttribute = methodInfo.GetCustomAttributes(typeof(HttpDeleteAttribute), true)
+                .Cast<HttpDeleteAttribute>()
+                .FirstOrDefault();
+
+                Assert.NotNull(deleteAttribute);
+                Assert.Equal(deleteAttribute.Template, "{id}");
             }
         }
 
@@ -77,6 +102,19 @@ namespace Dotnetcorehack.Test.Controllers
 
                 Assert.IsType<NotFoundResult>(actualResponse);
             }
+
+            [Fact]
+            public void ShouldBeAHttpPut()
+            {
+                var methodInfo = typeof(SurveysController).GetMethod(nameof(this.surveysController.Put));
+
+                var putAttribute = methodInfo.GetCustomAttributes(typeof(HttpPutAttribute), true)
+                .Cast<HttpPutAttribute>()
+                .FirstOrDefault();
+
+                Assert.NotNull(putAttribute);
+                Assert.Equal(putAttribute.Template, "{id}");
+            }
         }
 
         public class PostTest : SurveysControllerTest
@@ -102,24 +140,22 @@ namespace Dotnetcorehack.Test.Controllers
 
                 Assert.IsType<BadRequestObjectResult>(actualResponse);
             }
+
+            [Fact]
+            public void ShouldBeAHttpPost()
+            {
+                var methodInfo = typeof(SurveysController).GetMethod(nameof(this.surveysController.Post));
+
+                var postAttribute = methodInfo.GetCustomAttributes(typeof(HttpPostAttribute), true)
+                .Cast<HttpPostAttribute>()
+                .FirstOrDefault();
+
+                Assert.NotNull(postAttribute);
+            }
         }
 
         public class GetTest : SurveysControllerTest
         {
-            [Fact]
-            public void ShouldReturnAllSurveys()
-            {
-                var expectedSurveysCount = this.random.Next(0, 100);
-                var expectedSurveys = this.N(expectedSurveysCount, () => new Survey() { Id = this.random.Next() });
-                this.surveyRepository.Setup(repo => repo.GetSurveys()).Returns(expectedSurveys);
-
-                var response = this.surveysController.Get() as JsonResult;
-                var actualSurveys = response.Value as List<Survey>;
-
-                Assert.Same(expectedSurveys, actualSurveys);
-                Assert.Equal(expectedSurveysCount, actualSurveys.Count);
-            }
-
             [Fact]
             public void ShouldReturnSpecificSurvey()
             {
@@ -137,6 +173,19 @@ namespace Dotnetcorehack.Test.Controllers
                 var response = this.surveysController.Get(this.expectedId);
 
                 Assert.IsType<NotFoundResult>(response);
+            }
+
+            [Fact]
+            public void ShouldBeAHttpGet()
+            {
+                var methodInfo = typeof(SurveysController).GetMethod(nameof(this.surveysController.Get));
+
+                var getAttribute = methodInfo.GetCustomAttributes(typeof(HttpGetAttribute), true)
+                .Cast<HttpGetAttribute>()
+                .FirstOrDefault();
+
+                Assert.NotNull(getAttribute);
+                Assert.Equal(getAttribute.Template, "{id}");
             }
 
             private List<T> N<T>(int count, Func<T> creator)
