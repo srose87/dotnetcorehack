@@ -3,6 +3,8 @@
 
 A very basic API to get back into things with C#
 
+**I'm abandoning this project because it takes 6 seconds on my fully loaded MBP to build and run 84 tests. That is not acceptable and I do not see C# as a viable option for building testable APIs.**
+
 ## Prerequisites for Running and Writing Code
 1. Install [.Net Core](https://www.microsoft.com/net/download/core)
 2. Install [Install .NET Core SDK](https://www.microsoft.com/net/core#macos)
